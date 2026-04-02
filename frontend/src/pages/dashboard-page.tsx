@@ -4,7 +4,8 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { useAppState } from "../app/app-state"
 import { Badge } from "../components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { formatCurrencyBRL, formatDateTime } from "../lib/format"
+import { formatCurrencyBRL, formatDateTime, formatNumber, formatPercentage } from "../lib/format"
+import { getSeverityColor } from "../types/domain"
 
 export function DashboardPage() {
   const { alerts, dashboardKpis, transactions } = useAppState()
@@ -22,31 +23,31 @@ export function DashboardPage() {
   )
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <header className="space-y-1">
-        <h2 className="text-2xl font-semibold">Dashboard de indicadores</h2>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard de indicadores</h1>
         <p className="text-sm text-muted-foreground">
           Consulta otimizada para feedback instantaneo e leitura em ate 2 segundos.
         </p>
       </header>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" role="region" aria-label="Indicadores principais">
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Alertas (24h)</CardDescription>
-            <CardTitle className="text-3xl">{dashboardKpis.alerts24h}</CardTitle>
+            <CardTitle className="text-3xl">{formatNumber(dashboardKpis.alerts24h)}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Transacoes normalizadas</CardDescription>
-            <CardTitle className="text-3xl">{dashboardKpis.totalTransactions}</CardTitle>
+            <CardTitle className="text-3xl">{formatNumber(dashboardKpis.totalTransactions)}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Taxa de anomalia</CardDescription>
-            <CardTitle className="text-3xl">{dashboardKpis.anomalyRate.toFixed(1)}%</CardTitle>
+            <CardTitle className="text-3xl">{formatPercentage(dashboardKpis.anomalyRate)}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
@@ -89,10 +90,13 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {alerts.slice(0, 4).map((alert) => (
-              <article key={alert.id} className="rounded-lg border border-border p-3">
+              <article key={alert.id} className="rounded-lg border border-border p-3 transition-colors hover:bg-muted/50">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <p className="text-sm font-medium">{alert.id}</p>
-                  <Badge variant={alert.severity === "critical" ? "destructive" : "secondary"}>
+                  <Badge 
+                    variant={alert.severity === "critical" || alert.severity === "high" ? "destructive" : "secondary"}
+                    className={getSeverityColor(alert.severity)}
+                  >
                     {alert.severity}
                   </Badge>
                 </div>

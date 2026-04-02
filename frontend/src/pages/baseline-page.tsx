@@ -11,6 +11,7 @@ export function BaselinePage() {
   const [loading, setLoading] = useState(false)
 
   const handleRefresh = async () => {
+    if (loading) return
     setLoading(true)
     await refreshBaseline()
     setLoading(false)
@@ -41,9 +42,13 @@ export function BaselinePage() {
                 Sazonalidade {baseline.seasonalityEnabled ? "ativa" : "inativa"}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">Ultima atualizacao: {formatDateTime(baseline.lastUpdatedAt)}</p>
-            <p className="text-sm text-muted-foreground">Maturidade do baseline: {baseline.maturityDays} dias de historico validado.</p>
-            <Button onClick={handleRefresh} disabled={loading}>
+            <p className="text-sm text-muted-foreground">
+              Ultima atualizacao: <strong>{formatDateTime(baseline.lastUpdatedAt)}</strong>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Maturidade do baseline: <strong>{baseline.maturityDays} dias</strong> de historico validado.
+            </p>
+            <Button onClick={handleRefresh} disabled={loading} aria-busy={loading}>
               {loading ? "Recalculando..." : "Atualizar baseline"}
             </Button>
           </CardContent>

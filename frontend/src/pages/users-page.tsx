@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
-import type { UserRole } from "../types/domain"
+import { USER_ROLE_LABELS, type UserRole } from "../types/domain"
 
 export function UsersPage() {
   const { users, businesses, addUser, session } = useAppState()
@@ -23,12 +23,6 @@ export function UsersPage() {
     setEmail("")
     setRole("analyst")
     setBusinessId(session.businessId)
-  }
-
-  const roleLabel: Record<UserRole, string> = {
-    owner: "Owner",
-    analyst: "Analyst",
-    auditor: "Auditor",
   }
 
   return (
@@ -62,9 +56,9 @@ export function UsersPage() {
                   value={role}
                   onChange={(event) => setRole(event.target.value as UserRole)}
                 >
-                  <option value="owner">Owner</option>
-                  <option value="analyst">Analyst</option>
-                  <option value="auditor">Auditor</option>
+                  <option value="owner">{USER_ROLE_LABELS.owner}</option>
+                  <option value="analyst">{USER_ROLE_LABELS.analyst}</option>
+                  <option value="auditor">{USER_ROLE_LABELS.auditor}</option>
                 </select>
               </div>
               <div className="space-y-2">
@@ -110,7 +104,7 @@ export function UsersPage() {
                     <TableCell className="font-medium">{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
-                      <Badge variant="outline">{roleLabel[user.role]}</Badge>
+                      <Badge variant="outline">{USER_ROLE_LABELS[user.role]}</Badge>
                     </TableCell>
                     <TableCell>{businesses.find((business) => business.id === user.businessId)?.name ?? "-"}</TableCell>
                   </TableRow>

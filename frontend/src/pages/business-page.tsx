@@ -40,16 +40,34 @@ export function BusinessPage() {
           <CardContent>
             <form className="space-y-4" onSubmit={onSubmit}>
               <div className="space-y-2">
-                <Label htmlFor="business-name">Nome</Label>
-                <Input id="business-name" value={name} required onChange={(event) => setName(event.target.value)} />
+                <Label htmlFor="business-name">Nome do negócio</Label>
+                <Input 
+                  id="business-name" 
+                  value={name} 
+                  required 
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="Ex.: Escola TI Labs"
+                />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="business-segment">Segmento</Label>
-                <Input id="business-segment" value={segment} required onChange={(event) => setSegment(event.target.value)} />
+                <Label htmlFor="business-segment">Segmento de atuação</Label>
+                <Input 
+                  id="business-segment" 
+                  value={segment} 
+                  required 
+                  onChange={(event) => setSegment(event.target.value)}
+                  placeholder="Ex.: Educação"
+                />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="business-timezone">Fuso horario</Label>
-                <Input id="business-timezone" value={timezone} required onChange={(event) => setTimezone(event.target.value)} />
+                <Label htmlFor="business-timezone">Fuso horário</Label>
+                <Input 
+                  id="business-timezone" 
+                  value={timezone} 
+                  required 
+                  onChange={(event) => setTimezone(event.target.value)}
+                  placeholder="America/Sao_Paulo"
+                />
               </div>
               <Button className="w-full" type="submit">
                 Cadastrar negocio

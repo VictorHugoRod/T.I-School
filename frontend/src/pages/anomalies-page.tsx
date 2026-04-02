@@ -8,7 +8,7 @@ import { Label } from "../components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
 import { Textarea } from "../components/ui/textarea"
 import { formatCurrencyBRL, formatDateTime } from "../lib/format"
-import type { Alert, AlertStatus } from "../types/domain"
+import { ALERT_SEVERITY_LABELS, ALERT_STATUS_LABELS, type Alert, type AlertStatus } from "../types/domain"
 
 const statusOptions: AlertStatus[] = ["new", "investigating", "resolved", "false_positive"]
 
@@ -72,9 +72,13 @@ export function AnomaliesPage() {
                   >
                     <TableCell className="font-medium">{alert.id}</TableCell>
                     <TableCell>
-                      <Badge variant={alert.severity === "critical" ? "destructive" : "secondary"}>{alert.severity}</Badge>
+                      <Badge variant={alert.severity === "critical" || alert.severity === "high" ? "destructive" : "secondary"}>
+                        {ALERT_SEVERITY_LABELS[alert.severity]}
+                      </Badge>
                     </TableCell>
-                    <TableCell>{alert.status}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{ALERT_STATUS_LABELS[alert.status]}</Badge>
+                    </TableCell>
                     <TableCell>{Math.round(alert.score * 100)}%</TableCell>
                     <TableCell>{formatDateTime(alert.createdAt)}</TableCell>
                   </TableRow>
@@ -112,10 +116,12 @@ export function AnomaliesPage() {
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 value={nextStatus}
                 onChange={(event) => setNextStatus(event.target.value as AlertStatus)}
+
+                aria-label="Selecionar novo status"
               >
                 {statusOptions.map((status) => (
                   <option key={status} value={status}>
-                    {status}
+                    {ALERT_STATUS_LABELS[status]}
                   </option>
                 ))}
               </select>
@@ -151,9 +157,15 @@ export function AnomaliesPage() {
               <CardDescription>{selectedAlert.explanation}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <p className="text-sm text-muted-foreground">Status atual: {selectedAlert.status}</p>
-              <p className="text-sm text-muted-foreground">Transacoes associadas: {selectedAlert.transactionIds.length}</p>
-              <p className="text-sm text-muted-foreground">Pontuacao de risco: {Math.round(selectedAlert.score * 100)}%</p>
+              <p className="text-sm text-muted-foreground">
+                Status atual: <strong>{ALERT_STATUS_LABELS[selectedAlert.status]}</strong>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Transacoes associadas: <strong>{selectedAlert.transactionIds.length}</strong>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Pontuacao de risco: <strong>{Math.round(selectedAlert.score * 100)}%</strong>
+              </p>
             </CardContent>
           </Card>
 
@@ -192,7 +204,9 @@ export function AnomaliesPage() {
                 <TableBody>
                   {selectedAlert.history.map((historyItem, index) => (
                     <TableRow key={`${historyItem.changedAt}-${index}`}>
-                      <TableCell>{historyItem.status}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{ALERT_STATUS_LABELS[historyItem.status]}</Badge>
+                      </TableCell>
                       <TableCell>{historyItem.changedBy}</TableCell>
                       <TableCell>{formatDateTime(historyItem.changedAt)}</TableCell>
                       <TableCell>{historyItem.note || "-"}</TableCell>

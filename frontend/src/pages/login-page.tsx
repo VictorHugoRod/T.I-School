@@ -26,28 +26,29 @@ export function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-linear-to-b from-background to-muted px-4">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted px-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Acesso seguro</CardTitle>
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl">Acesso seguro</CardTitle>
           <CardDescription>
             Autenticacao visual (frontend-only) para acesso ao negocio vinculado.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={onSubmit}>
+          <form className="space-y-4" onSubmit={onSubmit} aria-label="Formulário de login">
             <div className="space-y-2">
-              <Label htmlFor="name">Nome</Label>
+              <Label htmlFor="name">Nome completo</Label>
               <Input
                 id="name"
                 required
                 placeholder="Ex.: Ana Gestora"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                autoComplete="name"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
+              <Label htmlFor="email">E-mail corporativo</Label>
               <Input
                 id="email"
                 type="email"
@@ -58,8 +59,8 @@ export function LoginPage() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
-            <Button className="w-full" type="submit">
-              Entrar
+            <Button className="w-full" type="submit" disabled={!name || !email}>
+              Entrar no sistema
             </Button>
           </form>
         </CardContent>
