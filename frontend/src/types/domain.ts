@@ -4,6 +4,26 @@ export type AlertSeverity = "low" | "medium" | "high" | "critical"
 
 export type AlertStatus = "new" | "investigating" | "resolved" | "false_positive"
 
+export const USER_ROLE_LABELS: Record<UserRole, string> = {
+  owner: "Proprietário",
+  analyst: "Analista",
+  auditor: "Auditor",
+}
+
+export const ALERT_SEVERITY_LABELS: Record<AlertSeverity, string> = {
+  low: "Baixa",
+  medium: "Média",
+  high: "Alta",
+  critical: "Crítica",
+}
+
+export const ALERT_STATUS_LABELS: Record<AlertStatus, string> = {
+  new: "Novo",
+  investigating: "Investigando",
+  resolved: "Resolvido",
+  false_positive: "Falso Positivo",
+}
+
 export interface Business {
   id: string
   name: string
@@ -81,4 +101,28 @@ export interface DashboardKpis {
   totalTransactions: number
   anomalyRate: number
   averageDetectionLagHours: number
+}
+
+export function isAlertCritical(alert: Alert): boolean {
+  return alert.severity === "critical" || alert.severity === "high"
+}
+
+export function getAlertStatusColor(status: AlertStatus): string {
+  const colors: Record<AlertStatus, string> = {
+    new: "text-blue-600",
+    investigating: "text-yellow-600",
+    resolved: "text-green-600",
+    false_positive: "text-gray-600",
+  }
+  return colors[status]
+}
+
+export function getSeverityColor(severity: AlertSeverity): string {
+  const colors: Record<AlertSeverity, string> = {
+    low: "text-blue-500",
+    medium: "text-yellow-500",
+    high: "text-orange-500",
+    critical: "text-red-500",
+  }
+  return colors[severity]
 }

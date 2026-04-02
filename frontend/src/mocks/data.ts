@@ -27,6 +27,14 @@ export const usersSeed: AppUser[] = [
     role: "analyst",
     createdAt: "2026-01-20T09:00:00Z",
   },
+  {
+    id: "usr-3",
+    businessId: "biz-1",
+    name: "Carlos Auditor",
+    email: "carlos@escolati.com",
+    role: "auditor",
+    createdAt: "2026-02-05T14:15:00Z",
+  },
 ]
 
 export const transactionsSeed: Transaction[] = [
@@ -35,6 +43,9 @@ export const transactionsSeed: Transaction[] = [
   { id: "txn-003", businessId: "biz-1", timestamp: "2026-03-25T15:04:00Z", amount: 12200, category: "Estorno", source: "CSV", normalized: true },
   { id: "txn-004", businessId: "biz-1", timestamp: "2026-03-25T15:06:00Z", amount: 11950, category: "Estorno", source: "CSV", normalized: true },
   { id: "txn-005", businessId: "biz-1", timestamp: "2026-03-26T11:19:00Z", amount: 240, category: "Mensalidade", source: "CSV", normalized: true },
+  { id: "txn-006", businessId: "biz-1", timestamp: "2026-03-26T14:22:00Z", amount: 260, category: "Mensalidade", source: "CSV", normalized: true },
+  { id: "txn-007", businessId: "biz-1", timestamp: "2026-03-27T09:45:00Z", amount: 280, category: "Mensalidade", source: "CSV", normalized: true },
+  { id: "txn-008", businessId: "biz-1", timestamp: "2026-03-27T16:30:00Z", amount: 150, category: "Material", source: "CSV", normalized: true },
 ]
 
 export const baselineSeed: BaselineSummary = {
@@ -71,6 +82,20 @@ export const alertsSeed: Alert[] = [
       { status: "investigating", changedBy: "Ana Gestora", changedAt: "2026-03-24T10:40:00Z", note: "Em validacao com financeiro." },
     ],
   },
+  {
+    id: "al-403",
+    businessId: "biz-1",
+    severity: "low",
+    status: "resolved",
+    explanation: "Valor de mensalidade ligeiramente acima da media.",
+    transactionIds: ["txn-007"],
+    createdAt: "2026-03-27T09:50:00Z",
+    score: 0.58,
+    history: [
+      { status: "new", changedBy: "Sistema", changedAt: "2026-03-27T09:50:00Z" },
+      { status: "resolved", changedBy: "Bruno Analista", changedAt: "2026-03-27T10:15:00Z", note: "Ajuste de preco aprovado." },
+    ],
+  },
 ]
 
 export const importJobsSeed: ImportJob[] = [
@@ -88,5 +113,20 @@ export const importJobsSeed: ImportJob[] = [
     status: "done",
     issues: [],
     createdAt: "2026-03-24T07:50:00Z",
+  },
+  {
+    id: "job-32",
+    fileName: "transacoes-fevereiro.csv",
+    delimiter: ",",
+    encoding: "utf-8",
+    mappedColumns: {
+      data: "date",
+      valor: "amount",
+      categoria: "category",
+    },
+    progress: 100,
+    status: "done",
+    issues: [],
+    createdAt: "2026-02-28T16:20:00Z",
   },
 ]
